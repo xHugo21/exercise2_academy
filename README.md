@@ -1,35 +1,20 @@
-# exercise2_academy
+# Second exercise Academy Frontend Developer at Empathy.co by Hugo García Cuesta
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+## Execution
+1. Install node.js
+2. Clone repository
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
+git clone https://github.com/xHugo21/exercise2_academy.git
+```
+3. Run npm run dev inside the project folder
+```
+cd exercise1_academy
+```
+```
 npm run dev
 ```
 
-### Compile and Minify for Production
+***
 
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## Functionality
+This interactive webpage allows the user to search for any characters from the Rick and Morty show by name and status. The characters are fetched from this [api](https://rickandmortyapi.com/). The objective of this second challenge is to develop the first exercise using the Vue.js framework
