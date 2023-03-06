@@ -1,3 +1,4 @@
+<!--Component that defines the section where a filter form is placed-->
 <template>
     <ul class="filters">
       <li v-for="filter in filters" v-bind:key="filter">
@@ -6,7 +7,7 @@
     </ul>
   </template>
   
-  <script>
+  <script lang="js">
     export default {
       props: ['filters']
     };

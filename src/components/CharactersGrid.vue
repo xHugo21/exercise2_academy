@@ -1,19 +1,21 @@
+<!--Component that defines the section where the characters cards are placed-->
 <template>
-    <section class="grid">
+    <section class="charactersgrid">
         <slot></slot>
     </section>
 </template>
 
-<script>
+<script lang="js">
     export default{
     }
 </script>
 
 <style scoped>
-    .grid {
+    .charactersgrid {
         display: flex;
-        flex-flow: row wrap;
-        list-style-type: none;
-        gap: 12px;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
     }
 </style>

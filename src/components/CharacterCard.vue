@@ -1,3 +1,4 @@
+<!--Component that defines each character card extracted from the Rick and Morty API-->
 <template>
     <article class="character">
       <img class="character__image" v-bind:alt="'character image of'+character.name" v-bind:src="character.image">
@@ -7,7 +8,7 @@
     </article>
   </template>
   
-  <script>
+  <script lang="js">
     export default {
       props: ['character']
     };

@@ -1,3 +1,4 @@
+<!--Component that defines a filter-->
 <template>
     <label class="filter">
       <slot></slot>
@@ -5,8 +6,9 @@
     </label>
   </template>
   
-  <script>
-    export default {};
+  <script lang="js">
+    export default {
+    };
   </script>
   
   <style scoped>
