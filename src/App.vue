@@ -156,11 +156,11 @@
 </script>
 
 <style scoped>
-	
-	body {
-		background-color: white;
-		font-family: Arial, sans-serif;
+	@font-face {
+		font-family: "Roboto";
+		src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 	}
+	
 
 	header {
 		display: flex;
