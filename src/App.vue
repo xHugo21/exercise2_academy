@@ -1,7 +1,7 @@
 <!--Second challenge. Create an application using Vue.js to fetch and filter characters from the Rick and Morty API. Created by Hugo García Cuesta-->
 <template>
 	<header>
-		<SearchBar v-on:input="getCharacters"></SearchBar>
+		<SearchBar v-on:input="debounce(getCharacters($event), 300)"></SearchBar>
  	</header>
 
   	<main>
@@ -34,12 +34,24 @@
  	</footer>
 </template>
 
+
+
 <script lang="js">
 	import CharacterCard from './components/CharacterCard.vue';
 	import CharactersGrid from './components/CharactersGrid.vue';
 	import FilterComponent from './components/FilterComponent.vue';
 	import FiltersGrid from './components/FiltersGrid.vue';
 	import SearchBar from './components/SearchBar.vue';
+
+	// Create an event listener that checks if we are at the bottom of the page
+	// If we are, it calls the loadMoreResults() function
+	window.addEventListener('scroll', function() {
+		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+			//console.log("EY");
+			this.loadMoreResults();
+		}
+	}.bind(this));
+
 	
 
 	export default {
@@ -63,10 +75,26 @@
 			}
 		},
 		methods: {
+			// Debounce function to avoid calling the API too many times
+			debounce(fn, wait){
+				let timer;
+				return function(...args){
+					if(timer) {
+						clearTimeout(timer); // clear any pre-existing timer
+					}
+					const context = this; // get the current context
+					timer = setTimeout(()=>{
+						fn.apply(context, args); // call the function if time expires
+					}, wait);
+				}
+			},
+
 			// Fetches the characters from the API and updates this.characters
 			async getCharacters(event) {
+				
 				let name;
 				if (event){
+					console.log(event.target.value);
 					name = event.target.value;
 				} else {
 					name = "";
@@ -82,6 +110,7 @@
 			// Updates this.filters depending on the characters that are currently being displayed
 			getFilters() {
 				this.filters.status = [];
+				this.filters.gender = [];
 				for (let i = 0; i < this.characters.length; i++) {
 					if (!this.filters.status.includes(this.characters[i].status)){
 						this.filters.status.push(this.characters[i].status);
@@ -121,13 +150,7 @@
 				}
 				this.getCharacters();
 				this.characters = this.characters.filter(character => currentfilters.includes(character.status));
-			},
-
-			onScroll ({ target: { scrollTop, clientHeight, scrollHeight }}) {
-      			if (scrollTop + clientHeight >= scrollHeight) {
-        			this.loadMoreResults()
-      			}
-    		},*/
+			},*/
 
 			async loadMoreResults(){
 				// If there isn´t more data -> display message and return

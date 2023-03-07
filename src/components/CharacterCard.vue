@@ -21,8 +21,13 @@
 		border: 2px solid purple;
 	}
 	.character__description{
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+	}
+
+	.character__status {
+		
 	}
     .character__status--alive {
     	background-color: #00ff00;
