@@ -1,0 +1,4 @@
+- Infinite scroll
+- Notify when there aren´t more results to display
+- Apply filters
+- Flex column card description

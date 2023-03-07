@@ -14,7 +14,8 @@
     .charactersgrid {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        margin-left: 5%;
+        /*justify-content: center;*/
         flex-wrap: wrap;
         gap: 15px;
     }

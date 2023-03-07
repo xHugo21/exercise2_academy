@@ -1,6 +1,6 @@
 <!--Component that defines the search bar-->
 <template>
-    <input v-on:input="$emit('search', $event.target.value)" class="search_bar" type="search" placeholder="Search">
+    <input v-on:input="$emit('search', $event.target.value)" class="search_bar" type="search" placeholder="Search...">
 </template>
 
 <script lang="js">

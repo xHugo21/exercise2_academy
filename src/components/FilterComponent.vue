@@ -1,8 +1,8 @@
 <!--Component that defines a filter-->
 <template>
-    <label class="filter">
+    <label class="filterlabel">
       <slot></slot>
-      <input type="radio" v-on:change="$emit('clickCheckbox',$event)" name="status-filter">
+      <input type="checkbox" v-on:change="$emit('clickCheckbox', $event)" name="status-filter">
     </label>
   </template>
   
