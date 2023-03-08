@@ -2,14 +2,16 @@
 <template>
     <ul>
     	<li v-for="filter in filters" v-bind:key="filter">
-        	<slot :filter="filter"></slot>
+        	<slot :filter="filter" :count="count"></slot>
       	</li>
     </ul>
 </template>
   
 <script lang="js">
     export default {
-      	props: ['filters']
+      	props: {
+			['filters']: Array
+		}
 	};
 </script>
   

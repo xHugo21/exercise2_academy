@@ -6,9 +6,14 @@
 
   	<main>
 		<aside>
-			<h2>Filters</h2>
+			<h2 class="titlefilters">Filters</h2>
 			<h3>Status</h3>
 			<FiltersGrid v-bind:filters="filters.status" v-slot="slotProps">
+				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
+			</FiltersGrid>
+
+			<h3>Species</h3>
+			<FiltersGrid v-bind:filters="filters.species" v-slot="slotProps">
 				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
 			</FiltersGrid>
 
@@ -58,14 +63,15 @@
 				characters: [],
 				filters: {
 					status: [],
+					species: [],
 					gender: [],
 				},
+				count: {Alive: 0, Dead: 0, unknown: 0},
 				checked: [],
 			}
 		},
 		methods: {
 			// Debounce function to avoid calling the API too many times
-			// Create a debounce function for the getCharacters method
 			debounce(func, wait, immediate) {
 				let timeout;
 				return function() {
@@ -97,23 +103,28 @@
 				this.characters = data.results;
 
 				this.getFilters();
+				//this.countStatus();
 			},
 
 			// Updates this.filters depending on the characters that are currently being displayed
 			getFilters() {
 				this.filters.status = [];
+				this.filters.species = [];
 				this.filters.gender = [];
 				for (let i = 0; i < this.characters.length; i++) {
 					if (!this.filters.status.includes(this.characters[i].status)){
 						this.filters.status.push(this.characters[i].status);
 					}
-				}
-				
-				for (let i = 0; i < this.characters.length; i++) {
+
+					if (!this.filters.species.includes(this.characters[i].species)){
+						this.filters.species.push(this.characters[i].species);
+					}
+
 					if (!this.filters.gender.includes(this.characters[i].gender)){
 						this.filters.gender.push(this.characters[i].gender);
 					}
 				}
+				
 			},
 
 			// This method updates the checked variable depending on checked filters
@@ -150,6 +161,10 @@
 							filteredCharacters.push(this.data.results[i]);
 						}
 
+						if (this.data.results[i].species == this.checked[j]){
+							filteredCharacters.push(this.data.results[i]);
+						}
+
 						if (this.data.results[i].gender == this.checked[j]){
 							filteredCharacters.push(this.data.results[i]);
 						}
@@ -175,8 +190,28 @@
 				const data = await api.json();
 				this.data = data;
 
+				//this.applyFilter();
+
 				this.characters = this.characters.concat(data.results);	
-			}
+				//this.applyFilter(); // Apply filters to new characters added
+			},
+
+			// Create a function that counts the number of characters displayed of each status
+			/*countStatus(){
+				
+				for (let i = 0; i < this.characters.length; i++) {
+					// For loop that loops through all the statuses
+					for (let status in this.count){
+						// If the status of the character matches the status in the loop
+						if (this.characters[i].status == status){
+							// Add 1 to the position of this.count that matches the status
+							this.count[status] += 1;
+						}
+					}
+				}
+				
+				console.log(this.count.Alive);
+			},*/
 		
 		},
 		mounted() {
@@ -219,11 +254,18 @@
 	aside {
 		display:flex;
 		flex-direction: column;
-		align-content: center;
+		align-items: flex-start;
+		margin-left: 5%;
+		padding-left: 5%;
 		border: 2px solid purple;
 		border-radius: 15px;
-		padding: 2%;
 		background-color: white;
+	}
+
+	.titlefilters{
+		align-self: center;
+		padding-left: none;
+		margin-left: none;
 	}
 
 	footer {

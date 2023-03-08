@@ -3,7 +3,7 @@
     <article class="character">
       	<img class="character__image" v-bind:alt="'character image of'+character.name" v-bind:src="character.image">
       	<div class="character__description">
-			<p>{{ character.name }}</p>
+			<p class="character__name">{{ character.name }}</p>
         	<div v-bind:class="['character__status','character__status--'+character.status.toLowerCase()]">{{ character.status }}</div>
       	</div>
     </article>
@@ -21,13 +21,24 @@
 		border: 2px solid purple;
 	}
 	.character__description{
-		display: grid;
+		/*display: grid;
 		grid-template-columns: 1fr 1fr;
+		align-items: center;*/
+		display:flex;
+		justify-content: space-around;
 		align-items: center;
 	}
 
+	.character__name{
+		padding: 2%;
+		border-radius:15px;
+		border: 2px solid purple;
+	}
+
 	.character__status {
-		
+		padding: 2%;
+		border-radius:15px;
+		border: 2px solid purple;
 	}
     .character__status--alive {
     	background-color: #00ff00;
