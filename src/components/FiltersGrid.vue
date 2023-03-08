@@ -2,7 +2,7 @@
 <template>
     <ul>
     	<li v-for="filter in filters" v-bind:key="filter">
-        	<slot :filter="filter" :count="count"></slot>
+        	<slot :filter="filter"></slot>
       	</li>
     </ul>
 </template>

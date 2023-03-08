@@ -1,7 +1,7 @@
 <!--Second challenge. Create an application using Vue.js to fetch and filter characters from the Rick and Morty API. Created by Hugo García Cuesta-->
 <template>
 	<header>
-		<SearchBar v-on:input="debounce(getCharacters($event), 500, false)"></SearchBar>
+		<SearchBar v-on:input="debounce(getCharacters($event), 300)"></SearchBar>
  	</header>
 
   	<main>
@@ -29,11 +29,7 @@
 		
   	</main>
 	
-	<div class="loadmorediv">
-		<button class="loadmorebutton" v-on:click="loadMoreResults()">Load More Results</button>
-	</div>
-
-  	<footer @scroll="onScroll">
+  	<footer>
     	<p>Rick and Morty Search Webpage using Vue.js</p>
     	<p>Hugo García Cuesta | Academy Frontend Developer</p>
  	</footer>
@@ -72,19 +68,14 @@
 		},
 		methods: {
 			// Debounce function to avoid calling the API too many times
-			debounce(func, wait, immediate) {
-				let timeout;
+			debounce(func, delay) {
+				let timerId;
 				return function() {
-					let context = this, args = arguments;
-					let later = function() {
-						timeout = null;
-						if (!immediate) func.apply(context, args);
-					};
-					let callNow = immediate && !timeout;
-					clearTimeout(timeout);
-					timeout = setTimeout(later, wait);
-					if (callNow) func.apply(context, args);
-				};
+					const context = this;
+					const args = arguments;
+					clearTimeout(timerId);
+					timerId = setTimeout(() => func.apply(context, args), delay);
+				}
 			},
 
 			// Fetches the characters from the API and updates this.characters
@@ -216,17 +207,19 @@
 		},
 		mounted() {
 			this.getCharacters(); // Calls getCharacters when the page is loaded
+
+			// Create an event listener that checks if we are at the bottom of the page
+			// If we are, it calls the loadMoreResults() function
+			window.addEventListener('scroll', function() {
+				if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+					this.debounce(this.loadMoreResults(), 500);
+				}
+			}.bind(this));
 		},
 	
   	}
 
-	// Create an event listener that checks if we are at the bottom of the page
-	// If we are, it calls the loadMoreResults() function
-	window.addEventListener('scroll', function() {
-		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-			this.debounce(this.loadMoreResults(), 500);
-		}
-	}.bind(this));
+	
 
 
 </script>
@@ -276,12 +269,6 @@
 		border-top: 2px solid purple;
 		border-bottom: 2px solid purple;
 		width: max;
-	}
-
-	.loadmorediv{
-		display:flex;
-		justify-content: center;
-		margin-top: 3%;
 	}
 
 </style>
