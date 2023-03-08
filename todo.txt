@@ -1,4 +1,5 @@
 - Infinite scroll fix
 - Notify when there aren´t more results to display
-- Apply filters
 - Debounce doesn't work
+- Filters don't work at the same time
+- When loading more results previous filters aren't applied

@@ -1,7 +1,7 @@
 <!--Second challenge. Create an application using Vue.js to fetch and filter characters from the Rick and Morty API. Created by Hugo García Cuesta-->
 <template>
 	<header>
-		<SearchBar v-on:input="debounce(getCharacters($event), 300)"></SearchBar>
+		<SearchBar v-on:input="debounce(getCharacters($event), 500, false)"></SearchBar>
  	</header>
 
   	<main>
@@ -43,17 +43,6 @@
 	import FiltersGrid from './components/FiltersGrid.vue';
 	import SearchBar from './components/SearchBar.vue';
 
-	// Create an event listener that checks if we are at the bottom of the page
-	// If we are, it calls the loadMoreResults() function
-	window.addEventListener('scroll', function() {
-		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-			//console.log("EY");
-			this.loadMoreResults();
-		}
-	}.bind(this));
-
-	
-
 	export default {
 		name: 'App',
 		components: {
@@ -76,17 +65,20 @@
 		},
 		methods: {
 			// Debounce function to avoid calling the API too many times
-			debounce(fn, wait){
-				let timer;
-				return function(...args){
-					if(timer) {
-						clearTimeout(timer); // clear any pre-existing timer
-					}
-					const context = this; // get the current context
-					timer = setTimeout(()=>{
-						fn.apply(context, args); // call the function if time expires
-					}, wait);
-				}
+			// Create a debounce function for the getCharacters method
+			debounce(func, wait, immediate) {
+				let timeout;
+				return function() {
+					let context = this, args = arguments;
+					let later = function() {
+						timeout = null;
+						if (!immediate) func.apply(context, args);
+					};
+					let callNow = immediate && !timeout;
+					clearTimeout(timeout);
+					timeout = setTimeout(later, wait);
+					if (callNow) func.apply(context, args);
+				};
 			},
 
 			// Fetches the characters from the API and updates this.characters
@@ -123,8 +115,8 @@
 					}
 				}
 			},
-			
-			/*
+
+			// This method updates the checked variable depending on checked filters
 			updateChecked(filter) {
 				// Check if filter is in checked
 				if (this.checked.includes(filter)){
@@ -137,20 +129,36 @@
 				console.log("checked "+this.checked);
 				this.applyFilter();
 			},
-
+			
+			// This method updates the characters displayed depending on checked filters
 			applyFilter(){
-				let currentfilters = [];
-				for (let i = 0; i < this.checked.length; i++) {
-					if (this.checked[i]){
-						currentfilters.push(this.filters[i]);
+				// If there are no filters checked, display all characters
+				if (this.checked.length == 0){
+					this.characters = this.data.results;
+					return;
+				}
+
+				// Create a new array to store the filtered characters
+				let filteredCharacters = [];
+
+				// Loop through all characters
+				for (let i = 0; i < this.data.results.length; i++) {
+					// Loop through all checked filters
+					for (let j = 0; j < this.checked.length; j++) {
+						// If the character matches the filter, add it to the filteredCharacters array
+						if (this.data.results[i].status == this.checked[j]){
+							filteredCharacters.push(this.data.results[i]);
+						}
+
+						if (this.data.results[i].gender == this.checked[j]){
+							filteredCharacters.push(this.data.results[i]);
+						}
 					}
 				}
-				if (currentfilters.length == 0){
-					currentfilters = this.filters;
-				}
-				this.getCharacters();
-				this.characters = this.characters.filter(character => currentfilters.includes(character.status));
-			},*/
+				// Update the characters displayed
+				this.characters = filteredCharacters;
+			},
+
 
 			async loadMoreResults(){
 				// If there isn´t more data -> display message and return
@@ -174,7 +182,17 @@
 		mounted() {
 			this.getCharacters(); // Calls getCharacters when the page is loaded
 		},
+	
   	}
+
+	// Create an event listener that checks if we are at the bottom of the page
+	// If we are, it calls the loadMoreResults() function
+	window.addEventListener('scroll', function() {
+		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+			this.debounce(this.loadMoreResults(), 500);
+		}
+	}.bind(this));
+
 
 </script>
 
