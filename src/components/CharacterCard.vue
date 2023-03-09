@@ -23,19 +23,10 @@
 		border: 2px solid purple;
 	}
 	.character__description{
-		/*display: grid;
-		grid-template-columns: 1fr 1fr;
-		align-items: center;*/
 		display:flex;
 		justify-content: space-around;
 		align-items: center;
 	}
-
-	/*.character__name{
-		padding: 2%;
-		border-radius:15px;
-		border: 2px solid purple;
-	}*/
 
 	.character__div {
 		padding: 2%;
