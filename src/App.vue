@@ -1,6 +1,7 @@
 <!--Second challenge. Create an application using Vue.js to fetch and filter characters from the Rick and Morty API. Created by Hugo García Cuesta-->
 <template>
 	<header>
+		<img class = "headerlogo" src="../public/Rick-and-Morty.png" alt="Rick and Morty Logo">
 		<SearchBar v-on:input="debounce(getCharacters($event), 300)"></SearchBar>
  	</header>
 
@@ -42,7 +43,7 @@
 	import CharactersGrid from './components/CharactersGrid.vue';
 	import FilterComponent from './components/FilterComponent.vue';
 	import FiltersGrid from './components/FiltersGrid.vue';
-	import SearchBar from './components/SearchBar.vue';
+	import SearchBar from './components/SearchBar.vue'; 
 
 	export default {
 		name: 'App',
@@ -225,18 +226,22 @@
 </script>
 
 <style scoped>
-	@font-face {
-		font-family: "Roboto";
-		src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
-	}
-	
-
 	header {
+		border-top: 2px solid purple;
+		border-bottom: 2px solid purple; 
 		display: flex;
-		justify-content: center;
+		justify-content:space-evenly;
 		align-items: center;
+		
+		
 		padding-bottom: 1.5%;
 		padding-top: 1.5%;
+		margin-bottom: 2%;
+	}
+
+	.headerlogo{
+		width: 10%;
+		height: 10%;
 	}
 
 	main {
@@ -253,6 +258,7 @@
 		border: 2px solid purple;
 		border-radius: 15px;
 		background-color: white;
+		height: max-content;
 	}
 
 	.titlefilters{

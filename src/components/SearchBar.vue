@@ -16,7 +16,7 @@
 		background-color: white;
 		border-radius: 15px;
 		border-color: purple;
-		width: 20%;
+		width: 40%;
 		height: 100%;
 		padding: 0.8%;
 	}
