@@ -30,22 +30,18 @@
   
 <style scoped>
     .episode__description{
-		display:flex;
-		justify-content: space-around;
-		align-items: center;
-        padding: 2%;
-		border-radius:15px;
-		border: 2px solid purple;
-		margin-top: 3%;
-		margin-bottom: 3%;
+		display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 2px solid purple;
+        padding: 10% 0 10% 0;
 	}
 
     .episode__info{
-        padding: 2%;
 		border-radius:15px;
 		border: 2px solid purple;
-		margin-top: 3%;
-		margin-bottom: 3%;
+		margin-top: 2%;
+		margin-bottom: 2%;
     }
 
 </style>

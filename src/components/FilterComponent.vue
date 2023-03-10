@@ -2,7 +2,7 @@
 <template>
     <label class="filterlabel">
       <slot></slot>
-      <input type="checkbox" v-on:change="$emit('clickCheckbox', $event)" name="status-filter">
+      <input class="checkboxfilter" type="checkbox" v-on:change="$emit('clickCheckbox', $event)" name="status-filter">
     </label>
   </template>
   

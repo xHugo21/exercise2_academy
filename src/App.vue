@@ -7,19 +7,19 @@
 
   	<main>
 		<aside>
-			<h2 class="titlefilters">Filters</h2>
-			<h3>Status</h3>
-			<FiltersGrid v-bind:filters="filters.status" v-slot="slotProps">
+			<h2 v-if="show_characters" class="titlefilters">Filters</h2>
+			<h3 v-if="show_characters">Status</h3>
+			<FiltersGrid v-if="show_characters" v-bind:filters="filters.status" v-slot="slotProps">
 				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
 			</FiltersGrid>
 
-			<h3>Species</h3>
-			<FiltersGrid v-bind:filters="filters.species" v-slot="slotProps">
+			<h3 v-if="show_characters">Species</h3>
+			<FiltersGrid v-if="show_characters" v-bind:filters="filters.species" v-slot="slotProps">
 				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
 			</FiltersGrid>
 
-			<h3>Gender</h3>
-			<FiltersGrid v-bind:filters="filters.gender" v-slot="slotProps">
+			<h3 v-if="show_characters">Gender</h3>
+			<FiltersGrid v-if="show_characters" v-bind:filters="filters.gender" v-slot="slotProps">
 				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
 			</FiltersGrid>
 
@@ -64,7 +64,7 @@
 		},
 		data() {
 			return {
-				data: {},
+				datacharacters: {},
 				characters: [],
 				filters: {
 					status: [],
@@ -75,6 +75,7 @@
 				checked: [],
 				show_characters: true,
 				episodes: [],
+				dataepisodes: {},
 			}
 		},
 		methods: {
@@ -100,7 +101,7 @@
 				}
 				const response = await fetch('https://rickandmortyapi.com/api/character/?name='+name);
 				const data = await response.json();
-				this.data = data;
+				this.datacharacters = data;
 				this.characters = data.results;
 
 				this.getFilters();
@@ -111,9 +112,8 @@
 				// Fetch all episodes from the API
 				const response = await fetch('https://rickandmortyapi.com/api/episode');
 				const data = await response.json();
-				this.data = data;
+				this.dataepisodes = data;
 				this.episodes = data.results;
-				console.log(this.data);
 			},
 
 			// Updates this.filters depending on the characters that are currently being displayed
@@ -155,7 +155,7 @@
 			applyFilter(){
 				// If there are no filters checked, display all characters
 				if (this.checked.length == 0){
-					this.characters = this.data.results;
+					this.characters = this.datacharacters.results;
 					return;
 				}
 
@@ -163,20 +163,20 @@
 				let filteredCharacters = [];
 
 				// Loop through all characters
-				for (let i = 0; i < this.data.results.length; i++) {
+				for (let i = 0; i < this.datacharacters.results.length; i++) {
 					// Loop through all checked filters
 					for (let j = 0; j < this.checked.length; j++) {
 						// If the character matches the filter, add it to the filteredCharacters array
-						if (this.data.results[i].status == this.checked[j]){
-							filteredCharacters.push(this.data.results[i]);
+						if (this.datacharacters.results[i].status == this.checked[j]){
+							filteredCharacters.push(this.datacharacters.results[i]);
 						}
 
-						if (this.data.results[i].species == this.checked[j]){
-							filteredCharacters.push(this.data.results[i]);
+						if (this.datacharacters.results[i].species == this.checked[j]){
+							filteredCharacters.push(this.datacharacters.results[i]);
 						}
 
-						if (this.data.results[i].gender == this.checked[j]){
-							filteredCharacters.push(this.data.results[i]);
+						if (this.datacharacters.results[i].gender == this.checked[j]){
+							filteredCharacters.push(this.datacharacters.results[i]);
 						}
 					}
 				}
@@ -186,24 +186,44 @@
 
 
 			async loadMoreResults(){
-				console.log(this.data.info.next);
-				// If there isn´t more data -> display message and return
-				if (this.data.info.next == null){
-					console.log("THERE AREN'T MORE RESULTS TO DISPLAY");
-					return;
+				var url;
+				// Uncheck all filters
+				const checkboxes = document.querySelectorAll('.checkboxfilter');
+				
+				// Loop through all checkboxes
+				for (let i = 0; i < checkboxes.length; i++) {
+					// If the checkbox is checked, uncheck it
+					if (checkboxes[i].checked){
+						checkboxes[i].checked = false;
+					}
 				}
 
+				// If there isn´t more data -> display message and return
+				/*if (this.datacharacters.info.next == null || this.dataepisodes.info.next == null){
+					console.log("THERE AREN'T MORE RESULTS TO DISPLAY");
+					return;
+				}*/
+
 				// Save new url
-				let url = this.data.info.next;
+				if (this.show_characters){
+					url = this.datacharacters.info.next;
+					// Fetch new data
+					const api = await fetch(url);
+					const data = await api.json();
+					this.datacharacters = data;
 
-				// Fetch new data
-				const api = await fetch(url);
-				const data = await api.json();
-				this.data = data;
+					this.characters = this.characters.concat(data.results);
+				}
+				else{
+					url = this.dataepisodes.info.next;
+					// Fetch new data
+					const api = await fetch(url);
+					const data = await api.json();
+					this.dataepisodes = data;
 
-				//this.applyFilter();
+					this.episodes = this.episodes.concat(data.results);
+				}
 
-				this.characters = this.characters.concat(data.results);	
 				//this.applyFilter(); // Apply filters to new characters added
 			},
 
@@ -214,6 +234,10 @@
 
 				if (!this.show_characters){
 					this.getEpisodes();
+				}
+
+				else{
+					this.getCharacters();
 				}
 			}
 
@@ -281,13 +305,11 @@
 		flex-direction: column;
 		align-items: flex-start;
 		margin-left: 5%;
-		padding-left: 5%;
-		padding-right: 5%;
 		border: 2px solid purple;
 		border-radius: 15px;
 		background-color: white;
 		height: max-content;
-		padding-bottom: 5%;
+		padding: 10%;
 	}
 /* CSS */
 	.button-6 {
