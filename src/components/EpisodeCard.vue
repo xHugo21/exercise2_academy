@@ -13,7 +13,18 @@
   
 <script lang="js">
     export default {
-    	props: ['episode']
+    	props: ['episode'],
+
+        /*data(){
+			return{
+				numberOfCharacters: 0
+			}
+		},
+		mounted: {
+			getNumberOfCharacters(){
+                this.numberOfCharacters = this.episode.characters.length;
+			}
+        }*/
     };
 </script>
   
