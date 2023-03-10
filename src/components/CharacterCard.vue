@@ -4,7 +4,7 @@
       	<img class="character__image" v-bind:alt="'character image of'+character.name" v-bind:src="character.image">
       	<div class="character__description">
 			<div class="character__name">{{ character.name }}</div>
-        	<div v-bind:class="['character__div','character__status--'+character.status.toLowerCase()]">{{ character.status }}</div>
+			<div v-bind:class="['character__div','character__status--'+character.status.toLowerCase()]">{{ character.status }}</div>
         	<div v-bind:class="['character__div','character__species--'+character.species.toLowerCase()]">{{ character.species }}</div>
         	<div v-bind:class="['character__div','character__gender--'+character.gender.toLowerCase()]">{{ character.gender }}</div>
       	</div>

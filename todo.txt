@@ -1,2 +1,4 @@
 - Debounce doesn't work
 - When loading more results previous filters aren't applied
+- Infinite scroll with episodes
+- Episode styling

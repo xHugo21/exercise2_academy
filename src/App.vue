@@ -22,10 +22,16 @@
 			<FiltersGrid v-bind:filters="filters.gender" v-slot="slotProps">
 				<FilterComponent v-on:clickCheckbox="updateChecked(slotProps.filter)">{{ slotProps.filter }}</FilterComponent>
 			</FiltersGrid>
+
+			<button v-on:click="toggleView()">Toggle view</button>
 		</aside>
 
-		<CharactersGrid>
+		<CharactersGrid v-if="show_characters">
 			<CharacterCard v-for="character in characters" v-bind:key="character.id" v-bind:character="character"></CharacterCard>
+		</CharactersGrid>
+
+		<CharactersGrid v-else>
+			<EpisodeCard v-for="episode in episodes" v-bind:key="episode.id" v-bind:episode="episode"></EpisodeCard>
 		</CharactersGrid>
 		
   	</main>
@@ -43,7 +49,8 @@
 	import CharactersGrid from './components/CharactersGrid.vue';
 	import FilterComponent from './components/FilterComponent.vue';
 	import FiltersGrid from './components/FiltersGrid.vue';
-	import SearchBar from './components/SearchBar.vue'; 
+	import SearchBar from './components/SearchBar.vue';
+	import EpisodeCard from './components/EpisodeCard.vue';
 
 	export default {
 		name: 'App',
@@ -52,7 +59,8 @@
 			CharactersGrid,
 			FilterComponent,
 			FiltersGrid,
-			SearchBar
+			SearchBar,
+			EpisodeCard
 		},
 		data() {
 			return {
@@ -65,6 +73,8 @@
 				},
 				count: {Alive: 0, Dead: 0, unknown: 0},
 				checked: [],
+				show_characters: true,
+				episodes: [],
 			}
 		},
 		methods: {
@@ -81,7 +91,6 @@
 
 			// Fetches the characters from the API and updates this.characters
 			async getCharacters(event) {
-				
 				let name;
 				if (event){
 					console.log(event.target.value);
@@ -96,6 +105,15 @@
 
 				this.getFilters();
 				//this.countStatus();
+			},
+
+			async getEpisodes(){
+				// Fetch all episodes from the API
+				const response = await fetch('https://rickandmortyapi.com/api/episode');
+				const data = await response.json();
+				this.data = data;
+				this.episodes = data.results;
+				console.log(this.data);
 			},
 
 			// Updates this.filters depending on the characters that are currently being displayed
@@ -168,6 +186,7 @@
 
 
 			async loadMoreResults(){
+				console.log(this.data.info.next);
 				// If there isn´t more data -> display message and return
 				if (this.data.info.next == null){
 					console.log("THERE AREN'T MORE RESULTS TO DISPLAY");
@@ -187,6 +206,16 @@
 				this.characters = this.characters.concat(data.results);	
 				//this.applyFilter(); // Apply filters to new characters added
 			},
+
+			toggleView(){
+				console.log("toggleView");
+				this.show_characters = !this.show_characters;
+				console.log(this.show_characters);
+
+				if (!this.show_characters){
+					this.getEpisodes();
+				}
+			}
 
 			// Create a function that counts the number of characters displayed of each status
 			/*countStatus(){
@@ -257,6 +286,7 @@
 		border-radius: 15px;
 		background-color: white;
 		height: max-content;
+		padding-bottom: 5%;
 	}
 
 	.titlefilters{
