@@ -19,3 +19,5 @@ npm run dev
 
 ## Functionality
 This interactive webpage allows the user to search for any characters from the Rick and Morty show by name and status. The characters are fetched from this [api](https://rickandmortyapi.com/). The objective of this second challenge is to develop the first exercise using the Vue.js framework.
+
+![](/public/screenshot.png)

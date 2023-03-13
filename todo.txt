@@ -1,2 +1,6 @@
 - Debounce doesn't work
 - Episode styling
+- Display message no more results load more
+- When loading more, results aren't displayed with filters
+- Rename css classes
+- RadioFilter
