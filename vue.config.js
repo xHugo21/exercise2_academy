@@ -1,3 +1,1 @@
-module.exports = {
-    publicPath: '/exercise2_academy'
-}
+export const publicPath = '/exercise2_academy';

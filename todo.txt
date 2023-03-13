@@ -4,3 +4,4 @@
 - When loading more, results aren't displayed with filters
 - Rename css classes
 - RadioFilter
+- TypeError: Cannot read properties of undefined (reading 'next')
